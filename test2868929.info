@@ -1,0 +1,3 @@
+name = Drupal issue 2868929 demo module
+core = 7.x
+package = Test

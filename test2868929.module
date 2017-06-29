@@ -1,0 +1,57 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function test2868929_menu() {
+  return array(
+    'test2868929' => array(
+      'title' => 'Test issue 2868929',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('test2868929_form'),
+      'access callback' => TRUE,
+    ),
+  );
+}
+
+function test2868929_form($form, $form_state) {
+  $form['description'] = array(
+    '#title' => t('Title'),
+    '#type' => 'textfield',
+    '#default_value' => '',
+  );
+  $form['name'] = array(
+    '#type' => 'machine_name',
+    '#default_value' => '',
+    '#machine_name' => array(
+      'source' => array('description'),
+      'exists' => 'test2868929_false',
+    ),
+  );
+  $form['button'] = array(
+    '#value' => t('Click me'),
+    '#type' => 'button',
+    '#ajax' => array(
+      'callback' => 'test2868929_ajax',
+      'wrapper' => 'result',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+  $form['ajax'] = array(
+    '#type' => 'markup',
+    '#markup' => 'Enter something in the title bar, customize the machine name and then click the button.',
+    '#prefix' => '<div id="result">',
+    '#suffix' => '</div>',
+  );
+
+  return $form;
+}
+
+function test2868929_false() {
+  return FALSE;
+}
+
+function test2868929_ajax($form, $form_state) {
+  $form['ajax']['#markup'] = 'The machine name field is now hidden and can no longer be edited.';
+  return $form['ajax'];
+}
